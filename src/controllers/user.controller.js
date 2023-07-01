@@ -19,19 +19,19 @@ const register = catchError(async (req, res) => {
   return res.status(201).json(result);
 });
 
-const login = catchError(async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ where: { username },raw:true });
-  if(!user) return res.json({error:"Invalid credentials"})
-  const validPassword = await bcrypt.compare(password, user.password);
-  delete user.password;
-  if (validPassword) {
-    const token = jwt.sign(user,"asdasdqw");
-    return res.json({user,token})
-  } else {
-    return res.json({error:"Invalid credentials"})
-  }
-});
+const login = catchError(async(req, res) => {
+    const { username, password } = req.body;
+    const user = await User.findOne({ where: { username } })
+    if(!user) return res.status(401).json({ message: "Invalid credentials" });
+    const validPassword = await bcrypt.compare(password, user.password);
+    if(!validPassword) return res.status(401).json({ message: "Invalid credentials" });
+    const token = jwt.sign(
+		{ user },
+		process.env.TOKEN_SECRET,
+		{ expiresIn: '1d' }
+)
+    return res.json({user, token});
+})
 
 const getOne = catchError(async (req, res) => {
   const { id } = req.params;
