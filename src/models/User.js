@@ -11,7 +11,7 @@ const User = sequelize.define('user', {
         allowNull: false
     },
     rol: {
-        type: DataTypes.ENUM('supervisor','recepcionista'),
+        type: DataTypes.ENUM('SUPERVISOR','RECEPCION'),
         allowNull: false
     },
 });

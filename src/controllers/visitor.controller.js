@@ -7,7 +7,7 @@ const getAll = catchError(async (req, res) => {
 });
 
 const create = catchError(async (req, res) => {
-  if (req.user.rol !== "recepcionista")
+  if (req.user.rol !== "RECEPCION")
     return res.status(203).json("Unauthorizate by rol");
   const result = await visitorController.create(req.body);
   return res.status(201).json(result);
@@ -27,7 +27,7 @@ const remove = catchError(async (req, res) => {
 });
 
 const update = catchError(async (req, res) => {
-  if (req.user.rol !== "recepcionista")
+  if (req.user.rol !== "RECEPCION")
     return res.status(203).json("Unauthorizate by rol");
   const { id } = req.params;
   const result = await visitorController.update(req.body, {
@@ -40,7 +40,7 @@ const update = catchError(async (req, res) => {
 
 const addNote = catchError(async (req, res) => {
   const { id } = req.params;
-  if (req.user.rol !== "supervisor")
+  if (req.user.rol !== "SUPERVISOR")
     return res.status(203).json("Unauthorizate by rol");
   const result = await visitorController.update({note:req.body.note}, {
     where: { id },
